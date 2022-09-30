@@ -7,6 +7,9 @@ services:
       target: app_php
     image: php81/php:dev
     restart: on-failure
+    networks:
+      RAS_PROD1:
+          ipv4_address: 192.168.1.7
     environment:
       APP_ENV: dev
       APP_DEBUG: 1
@@ -22,12 +25,18 @@ services:
       target: app_nginx
     image: nginx:dev
     restart: on-failure
+    networks:
+      RAS_PROD1:
+          ipv4_address: 192.168.1.6
     depends_on:
       - php81
     volumes:
       - ./public:/app/public:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:rw
-
+networks:
+    RAS_PROD1:
+        name: monolithic_api_RAS_PROD
+        external: true
 volumes:
   db-data:
   var:
